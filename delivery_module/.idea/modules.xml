@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../customized_module/.idea/customized_module.iml" filepath="$PROJECT_DIR$/../customized_module/.idea/customized_module.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/delivery_module.iml" filepath="$PROJECT_DIR$/.idea/delivery_module.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../field_image_preview/.idea/field_image_preview.iml" filepath="$PROJECT_DIR$/../field_image_preview/.idea/field_image_preview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../salon_management/.idea/salon_management.iml" filepath="$PROJECT_DIR$/../salon_management/.idea/salon_management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../swipe_images_backend/.idea/swipe_images_backend.iml" filepath="$PROJECT_DIR$/../swipe_images_backend/.idea/swipe_images_backend.iml" />
+    </modules>
+  </component>
+</project>

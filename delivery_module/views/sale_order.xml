@@ -1,0 +1,129 @@
+<odoo>
+	<data>
+
+
+		<record id="view_sales_order_filter_confirmed" model="ir.ui.view">
+            <field name="name">sale.order.list.select confirmed</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Confirmed Sales Order">
+                	<field name="state" />
+                    <filter string="Confirmed" name="confirmed" domain="[('state','=',('sale'))]"/>
+                </search>
+            </field>
+        </record>
+
+		<record id="view_sales_order_delivered_rejected_filter" model="ir.ui.view">
+            <field name="name">sale.order.list.select Rejected delivered</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Group delivered rejected Sales Order">
+                	<field name="state" />
+                    <filter string="Delivered/rejected" name="delivered_rejected" domain="[('state','in',('delivered','rejected'))]"/>
+                     <group expand="0" string="Group By">
+                        <filter string="State" name="states" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+		<record id="view_sales_order_rejected_filter" model="ir.ui.view">
+            <field name="name">sale.order.list.select rejected</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Rejected Sales Order">
+                	<field name="state" />
+                    <filter string="Rejected" name="rejected" domain="[('state','=',('rejected'))]"/>
+                </search>
+            </field>
+        </record>
+
+    <record id="action_rejected_order_view" model="ir.actions.act_window">
+            <field name="name">Rejected Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+             <field name="search_view_id" ref="view_sales_order_rejected_filter"/>
+            <field name="context">{'search_default_rejected': 1,}</field>
+            <!-- <field name="domain">[('chair_id', '=', active_id)]</field> -->
+        </record>
+    <record id="action_confirmed_order_view" model="ir.actions.act_window">
+            <field name="name">Confirmed sale orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+             <field name="search_view_id" ref="view_sales_order_filter_confirmed"/>
+            <field name="context">{'search_default_confirmed': 1}</field>
+            <!-- <field name="domain">[('chair_id', '=', active_id)]</field> -->
+        </record>
+    <record id="action_delivered_rejected_order_view" model="ir.actions.act_window">
+            <field name="name">Delivered / Rejected Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+             <field name="search_view_id" ref="view_sales_order_delivered_rejected_filter"/>
+            <field name="context">{'search_default_delivered_rejected': 1,
+            					   'search_default_states': 1,}</field>
+            <!-- <field name="domain">[('chair_id', '=', active_id)]</field> -->
+        </record>
+
+        <record id="action_delivery_order" model="ir.actions.act_window">
+            <field name="name">Delivery Order</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="search_view_id" ref="view_sales_order_delivered_rejected_filter"/>-->
+        <!--    <field name="context">{'search_default_delivered_rejected': 1,
+            					   'search_default_states': 1,}</field>-->
+            <!-- <field name="domain">[('chair_id', '=', active_id)]</field> -->
+        </record>
+
+   	<record id="delivery_order_form" model="ir.ui.view">
+            <field name="name">delivery_order_form_inherited</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='backorder_id']" position="after">
+                    <field name="order_description" />
+                    <field name="total_cost_order" />
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button name="delivered_action" attrs="{'invisible': [('state', '!=', 'done')]}" string="Deliver" type="object"/>
+                    <button name="rejected_action" attrs="{'invisible': [('state', '!=', 'done')]}" string="Reject" type="object"/>
+                    <field name="state_deliv" widget="statusbar" />
+                </xpath>
+            </field>
+    </record>
+
+   	<record id="delivery_order_tree" model="ir.ui.view">
+            <field name="name">delivery_order_form_inherited</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='state']" position="after">
+                    <field name="state_deliv" widget="badge" decoration-success="state == 'delivered'" decoration-info="state == 'pending'" decoration-danger="state == 'rejected'"/>
+                </xpath>
+            </field>
+    </record>
+
+        <record id="sstock_picking_deivered" model="ir.actions.server">
+            <field name="name">Make it Delivered</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_model_id" ref="stock.model_stock_picking"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.delivered_action()</field>
+<!--            <field name='groups_id' eval="[(4, ref('delivery_module.delivery_manager'))]"/>-->
+        </record>
+
+        <record id="sale_order_confimed_and_delivered_to_truck" model="ir.actions.server">
+            <field name="name">Confirm and deliver to truck</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.multi_action_confirm()</field>
+            <field name='groups_id' eval="[(4, ref('delivery_module.delivery_manager'))]"/>
+        </record>
+    </data>
+</odoo>

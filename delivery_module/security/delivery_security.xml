@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<data>
+        <record model="ir.module.category" id="module_delivery_management">
+             <field name="name">Delivery</field>
+             <field name="description">User access level for Delivery module</field>
+             <field name="sequence">20</field>
+        </record>
+
+        <record id="delivery_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="module_delivery_management"/>
+        </record>
+
+        <record id="delivery_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="module_delivery_management"/>
+            <field name="implied_ids" eval="[(4, ref('delivery_user'))]"/>
+        </record>
+
+
+
+
+</data>
+</odoo>

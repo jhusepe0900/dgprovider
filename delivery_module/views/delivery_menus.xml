@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Top menu item -->
+        <menuitem name="Delivery"
+            id="menu_delivery"
+			sequence="60"/>
+
+		<menuitem id="menu_orders"
+			name="Orders" 
+			parent="menu_delivery" 
+			sequence="2"
+			action="sale.action_orders"
+			/>
+
+		<menuitem id="menu_confirmed_order" 
+			name="Confirmed Orders" 
+			parent="menu_delivery" 
+			action="delivery_module.action_confirmed_order_view"
+			sequence="2"
+			groups="delivery_module.delivery_manager"
+			/>
+
+		<menuitem id="menu_delivered_rejected" 
+			name="Delivered/Rejected Orders" 
+			parent="menu_delivery" 
+			action="delivery_module.action_delivered_rejected_order_view"
+			sequence="2"
+			groups="delivery_module.delivery_manager"
+			/>
+
+<!--
+		<menuitem id="menu_rejected"
+			name="Rejected Orders" 
+			parent="stock.menu_stock_root"
+			action="delivery_module.action_rejected_order_view"
+			sequence="2"
+			/>
+-->
+
+		<menuitem id="menu_delivery_order"
+			name="Delivery Orders"
+			parent="menu_delivery"
+			action="delivery_module.action_delivery_order"
+			sequence="2"
+			/>
+</data>
+</odoo>

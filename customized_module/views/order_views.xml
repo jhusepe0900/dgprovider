@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<data>
+
+		<record id="order_view_state_inherit" model="ir.ui.view">
+            <field name="name">order.view.state.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- <xpath expr="//header/button[@name='action_draft']" position="replace">
+                 <button name="action_draft" states="cancel,rejected,delivered" type="object" string="Set to Quotation"/>
+                </xpath> -->
+	            <xpath expr="//header" position="inside">
+                 <button name="make_it_delivered" states="rejected,sale" type="object" string="Delivered"/>
+                 <button name="make_it_rejected" states="delivered,sale" type="object" string="Rejected"/>
+                </xpath>
+            	<xpath expr="//header/field[@name='state']" position="replace">
+                    <field name="state"   widget="statusbar"  statusbar_visible="draft,sent,sale,delivered,rejected"/>
+                </xpath>
+            </field>
+        </record>
+</data>
+</odoo>

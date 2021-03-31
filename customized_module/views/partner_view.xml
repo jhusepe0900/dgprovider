@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+<data>
+
+		<record id="extra_pictures" model="ir.ui.view">
+            <field name="name">extra_pictures.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+            	<xpath expr="//notebook" position="inside">
+                <page name="Images" string="Images" >
+                        
+                   <!--  <group name="partner_template_images" string="Extra Product Media">
+                        <field name="partner_pictures" class="o_website_sale_image_list" context="{'default_partner_id': active_id}" mode="kanban" options="{'create_text':'Add a Picture'}" nolabel="1"/>
+                    </group> -->
+
+                    <group name="product_template_images" string="Extra Product Media">
+                        <field name="partner_pictures" class="o_website_sale_image_list" context="{'default_partner_id':active_id,}" mode="kanban" options="{'create_text':'Add a Media'}" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+               
+            </field>
+        </record>
+
+
+        <record id="extra_pictures_form" model="ir.ui.view">
+            <field name="name">extra_pictures form</field>
+            <field name="model">partner.images</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="partner_id" />
+                            </group>
+                            <group>
+                                <field name="image_1920" widget="image"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+</data>
+</odoo>
